@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>音乐</title>
+    <link rel="stylesheet" href="https://at.alicdn.com/t/font_860767_w3kk29ahtpl.css">
+    <link rel="stylesheet" href="search.css">
+</head>
+
+<body>
+    <div class="navigation_box clear">
+        <div class="navigation">
+            <a href="javascript:;" class="music_icon">
+                <i class="iconfont icon-yinle i1"></i>
+            </a>
+            <div class="search_box">
+                <input type="text" class="searchbox" id="searchbox" style="border-right:none">
+            </div>
+            <!-- 搜索音乐 -->
+            <a href="javascript:;" class="searchbox_icon" id="searchbox_icon" style="border-left:none; background-color: white">
+                <i class="iconfont icon-sousuo i2"></i>
+            </a>
+
+            <div class="adhibition ">
+                <div class="recommend">排行榜</div>
+                <div class="rankinglist">歌手</div>
+                <div class="mv">mv</div>
+
+            </div>
+        </div>
+
+        <!-- <audio id="ad" controls src=""></audio> -->
+        
+       
+    </div>
+
+
+    <div class="music_list">
+
+        <ul class="music_list_header clear">
+            <li>歌曲</li>
+            <li>歌手</li>
+            <li>专辑</li>
+            <li>时长</li>
+        </ul>
+        <ul class="music_list_lis clear">
+
+        </ul>
+
+    </div>
+</body>
+<script src="./js/jquery-3.3.1.js"></script>
+<!-- <script src="sck.js"></script> -->
+<script>
+    $(".recommend").click(function(){
+        location.href="rankinglist.html";
+    })
+    $(".music_icon").click(function(){
+        location.href="index.html"
+    })
+    var searchbox = $("#searchbox")[0]
+
+    searchbox.oninput = function () {
+        var search_input = $(".searchbox").val()
+        $.ajax({
+            type: "get",
+            url: 'http://tingapi.ting.baidu.com/v1/restserver/ting?method=baidu.ting.search.common&query=' + search_input,
+            dataType: 'jsonp',
+            // jsonp: 'jsonpCallback',
+        }).done(function (data) {
+            console.log(data)
+            console.log(data.song_list)
+            list(data)//创建搜索联想列表
+
+        })
+
+    }
+    //创建搜索联想列表
+    function list(data) {
+
+        var songs = data.song_list
+        var sh = $("<ul class='serch_music'></ul>")
+        // console.log(sh)
+        $.each(songs, function (i, v) {
+
+            var li = $("<li>" + v.title + "---" + v.author + "</li>")
+            $(".serch_music").append(li)
+            $(".search_box").append(sh)
+            // console.log(data.song_list)
+        })
+        shouge(songs)//搜索歌曲
+
+    }
+    //搜索联想列表里面的每一个li触发函数shouge
+    $(".serch_music").on('click', 'li', shouge)
+
+    function shouge(songs) {//搜索歌曲
+        $(".serch_music li").click(function () {
+            var reg = /<[^<>]+>/g;
+
+            var that = $(this).html().replace(reg, '')
+            $(".searchbox").val(that)//输入框内的歌与列表中点击的歌对应
+            dj(that)
+        })
+        /* $.each(songs, function (i, v) {
+            var id = v.song_id
+            // console.log(id)
+            $(".serch_music li").eq(i).attr("sign", id)//每一个li都加上api上的对应数据的id属性
+
+        }) */
+    }
+
+
+    //baidu.ting.song.play&songid=877578
+
+    //搜索图标点击事件
+    $(".searchbox_icon").click(function(){
+        dj($(".searchbox").val())
+    })
+    //点击生成歌单事件
+    function dj(sj) {
+        // console.log($(".searchbox").val())
+
+        $(".music_list_lis").html("")/*清空歌单数据*/
+        /* var dat = sj||$(".searchbox").val() */
+        // console.log($(".searchbox").val(),dat,sj)
+        $.ajax({
+            type: "get",
+            url: 'http://tingapi.ting.baidu.com/v1/restserver/ting?method=baidu.ting.search.common&query=' +sj,
+            dataType: 'jsonp',
+            // jsonp: 'jsonpCallback',
+        }).done(function (data) {
+            console.log(data)
+            $(".serch_music").css("display", "none")
+            for (var i = 0; i < data.song_list.length; i++) {
+
+                if (i < 10) {
+                    var songlis = $("<li>" + "</li>")
+                    var div1 = $("<div>" + data.song_list[i].title.replace(/<[^<>]+>/g,'') + "</div>")
+                    var bf=$('<i class="iconfont icon-iconset0481 i3"></i>')
+                    // console.log(data.song_list[i].song_id)
+                    // console.log($(".i3"))
+                    bf.attr("links",data.song_list[i].song_id)//给每一个首歌曲加上对应的id
+                    // bf.click(tz)
+                    // console.log($(".music_list_lis>li i"))
+                    var div2 = $("<div>" + data.song_list[i].author.replace(/<[^<>]+>/g,'') + "</div>")
+                    var div3 = $("<div>" + data.song_list[i].album_title.replace(/<[^<>]+>/g,'')+ "</div>")
+                    var div4 = $("<div>" +  +"</div>")       
+                    div1.append(bf)       
+                    songlis.append(div1)
+                    songlis.append(div2)
+                    songlis.append(div3)
+                    songlis.append(div4)
+                    
+
+                    $(".music_list_lis").append(songlis)
+                }
+                // console.log($(".i3"))
+                // localStorage.setItem('links' ,$(".i3").attr("link") )
+                
+            }
+            // linkto(data)
+            function n(num){
+                num=num>=10?num:"0"+num;
+                return num
+            }
+            
+        })
+    }
+    var arr=[]
+        // console.log($(this).index())
+    $(".music_list_lis").on('click','i',cc)//歌单列表里每一个li添加对应的歌曲id
+    if(localStorage.getItem('ids')){
+        arr= JSON.parse(localStorage.getItem('ids'))//本地存储歌曲id
+        
+    }
+
+    function cc(){//点击i标签跳转到播放页面
+        
+        // console.log($(this).parent().parent().index())
+        var ids=$(this).attr("links")
+        arr.push(ids)//将点击对应的歌曲的id存入数组(本地存储)
+        localStorage.setItem("ids",JSON.stringify(arr))
+        window.open("play.html")//点击歌曲对应的i标签跳转到播放音乐页面
+    }
+
+
+        // console.log(data)
+
+  
+        // window.location.href = "play.html?" + $(this).attr("links")
+        // window.open("play.html")
+    
+    // $(" .music_list_lis lidiv ").on('click', 'i', linkto)
+    // function linkto(data){
+    //    console.log(data.song_list)
+    //    for(var i=0;i<data.song_list.length;i++){
+    //        $(this).attr("link",data.song_list[i].song_id)
+    //    }
+    // }
+
+    var c=decodeURIComponent(window.location.href)
+   if(c.split("?")){
+        var sj=c.split("?")[1]
+        
+        dj(sj)
+   }
+   
+
+
+</script>
+
+</html>

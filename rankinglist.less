@@ -1,0 +1,166 @@
+.clear(){
+    content: "";
+    clear: both;
+    display: block;
+}
+.recommend{
+    background: #CCEC86;
+}
+.song_charts{
+    width: 100%;
+    position: relative;
+    .song_chart{
+        width:1226px;
+        margin: auto;
+        &::after{//清除浮动
+            .clear();
+        }
+        .song_charts_content{
+        float: left;
+        width: 140px;
+        >ul{
+            list-style: none;
+            width: 100%;
+            div{
+                font-size: 22px;
+                color: #432424;
+                width: 100%;
+                text-align: center;
+                height: 90px;
+                line-height: 90px;
+                border-bottom: 1px solid #ccc;
+                border-right: 1px solid #ccc;
+                border-left: 1px solid #ccc;
+            }
+            li{
+                font-size: 22px;
+                color: #596248;
+                width: 100%;
+                text-align: center;
+                height: 90px;
+                line-height: 90px;
+                border-bottom: 1px solid #ccc;
+                border-right: 1px solid #ccc;
+                border-left: 1px solid #ccc;
+            }
+        }
+    }
+    .song_charts_lis{
+        float: right;
+        width: 1086px;
+        .tittle{
+            width: 100%;
+            color: #b7c991;
+            height: 90px;
+            line-height: 90px;
+            font-size: 38px;
+            padding-left: 103px;
+
+        }
+        .song_table{
+            width: 100%;
+            height: 90px;
+            color: #432424;
+            font-size: 18px;
+            background: #dbdbdb40;
+
+            &::after{//清除浮动
+                .clear();
+            }
+            div{
+                float: left;
+                height: 100%;
+                 line-height: 90px;
+            }
+            div:nth-child(1){
+                width: 10%;
+                text-align: center;
+            }
+            div:nth-child(2){
+               width: 50%;
+            }
+            div:nth-child(3){
+                width: 30%;
+             }
+             div:nth-child(4){
+                width: 10%;
+             }
+        }
+        >.topul{
+            width: 100%;
+            list-style: none;
+            background: #dbdbdb40;
+            
+            >li{
+                width: 100%;
+                height: 91px;
+                line-height: 91px;
+                
+                // background: palegoldenrod;
+                &::after{//清除浮动
+                    .clear();
+                   
+                }
+
+                >div{
+                    height: 100%;
+                    float: left;
+                }
+                div:nth-child(1){
+                    width: 10%;
+                    text-align: center;
+                }
+                div:nth-child(2){
+                   width: 50%;
+                   position: relative;
+                  span{
+                    display: block;
+                    position: absolute;
+                    top: 0;
+                    left: 19%;
+                    height: 100%;
+                    z-index: 5;
+                
+                  }
+                   img{
+                    display: block;
+                    position: relative;
+                    left: 0;
+                    width: 90px;
+                    height: 90px;
+                   }
+                   a{
+                    display: block;
+                    position: relative;
+                    left: 87%;
+                    width: 50px;
+                    height: 91px;
+                    text-align: center;
+                    line-height: 91px;
+                    text-decoration: none;
+                    color: #333;
+                    bottom: 100%;
+                       i{
+                           font-size: 50px;
+     
+                       }
+                   }
+                }
+                div:nth-child(3){
+                    width: 30%;
+                
+                 }
+                 div:nth-child(4){
+                    width: 10%;
+                  
+                 }
+            }
+            
+            }
+        }
+
+    }
+
+}
+
+    

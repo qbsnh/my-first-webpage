@@ -1,0 +1,191 @@
+song_list.song_charts {
+  width: 100%;
+  position: relative;
+}
+.song_charts .song_chart {
+  width: 1226px;
+  margin: auto;
+}
+.song_charts .song_chart::after {
+  content: "";
+  clear: both;
+  display: block;
+}
+.song_charts .song_chart .song_charts_content {
+  float: left;
+  width: 140px;
+}
+.song_charts .song_chart .song_charts_content > ul {
+  list-style: none;
+  width: 100%;
+}
+.song_charts .song_chart .song_charts_content > ul li {
+  width: 100%;
+  text-align: center;
+  height: 90px;
+  line-height: 90px;
+  font-size: 18px;
+  border-bottom: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+}
+.song_charts .song_chart .song_charts_lis {
+  float: right;
+  width: 1086px;
+}
+.song_charts .song_chart .song_charts_lis .tittle {
+  width: 100%;
+  line-height: 90px;
+    font-size: 27px;
+    padding-left: 104px;
+}
+.song_charts .song_chart .song_charts_content div{
+    width: 100%;
+    text-align: center;
+    height: 90px;
+    line-height: 90px;    font-size: 20px;
+    border-bottom: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+
+}
+.song_charts .song_chart .song_charts_lis .song_table {
+  width: 100%;
+  height: 90px;
+  background: #a2b6b76e;
+}
+.song_charts .song_chart .song_charts_lis .song_table::after {
+  content: "";
+  clear: both;
+  display: block;
+}
+.song_charts .song_chart .song_charts_lis .song_table div {
+  float: left;
+  height: 100%;
+  line-height: 90px;
+
+}
+.song_charts .song_chart .song_charts_lis .song_table div:nth-child(1) {
+  width: 10%;
+  text-align: center;
+}
+.song_charts .song_chart .song_charts_lis .song_table div:nth-child(2) {
+  width: 50%;
+ 
+}
+.song_charts .song_chart .song_charts_lis .song_table div:nth-child(3) {
+  width: 30%;
+  
+
+}
+.song_charts .song_chart .song_charts_lis .song_table div:nth-child(4) {
+  width: 10%;
+
+}
+.song_charts .song_chart .song_charts_lis > ul {
+  width: 100%;
+  list-style: none;
+  background: #a2b6b76e;
+}
+.song_charts .song_chart .song_charts_lis > ul li::after{
+  content: "";
+  clear: both;
+  display: block;
+}
+.song_charts .song_chart .song_charts_lis > ul li {
+
+  height: 91px;
+  width: 100%;
+  line-height: 91px;
+}
+.song_charts .song_chart .song_charts_lis > ul li div{
+  float: left;
+  height: 100%;
+}
+.song_charts .song_chart .song_charts_lis > ul li div:nth-child(1) {
+  width: 10%;
+  font-size: 20px;
+  text-align: center;
+ 
+}
+.song_charts .song_chart .song_charts_lis > ul li div:nth-child(2) {
+  width: 50%;
+
+  position: relative;
+
+}
+.song_charts .song_chart .song_charts_lis > ul li div:nth-child(2) img {
+  display: block;
+  position: absolute;
+  left: 0;
+  width: 90px;
+  height: 90px;
+}
+.song_charts .song_chart .song_charts_lis > ul li div:nth-child(2) span{
+  display: block;
+  position: absolute;
+  left: 100px;
+}
+.song_charts .song_chart .song_charts_lis > ul li div:nth-child(2) a {
+  display: block;
+  position: absolute;
+  right: 5%;
+  width: 50px;
+  height: 51px;
+  text-align: center;
+  line-height: 51px;
+  line-height: 91px;
+  text-decoration: none;
+  color: #333;
+  z-index: 111;
+  top: 0;
+}
+.song_charts .song_chart .song_charts_lis > ul li div:nth-child(2) a i {
+  font-size: 35px;
+}
+.song_charts .song_chart .song_charts_lis > ul li div:nth-child(3) {
+  width: 30%;
+
+}
+.song_charts .song_chart .song_charts_lis > ul li div:nth-child(4) {
+  width: 10%;
+
+} 
+/* .song_charts .song_chart .song_charts_lis > ul li div:nth-child(1) {
+  width: 10%;
+  background: hotpink;
+}
+.song_charts .song_chart .song_charts_lis > ul li div:nth-child(2) {
+  width: 50%;
+  background: gold;
+  position: relative;
+}
+.song_charts .song_chart .song_charts_lis > ul li div:nth-child(2) img {
+  display: block;
+  position: absolute;
+  left: 0;
+  width: 90px;
+  height: 90px;
+}
+.song_charts .song_chart .song_charts_lis > ul li div:nth-child(2) a {
+  display: block;
+  position: absolute;
+  right: 5%;
+  width: 50px;
+  height: 51px;
+  text-align: center;
+  line-height: 51px;
+  text-decoration: none;
+  color: #333;
+}
+.song_charts .song_chart .song_charts_lis > ul li div:nth-child(2) a i {
+  font-size: 35px;
+}
+.song_charts .song_chart .song_charts_lis > ul li div:nth-child(3) {
+  width: 30%;
+  background: greenyellow;
+}
+.song_charts .song_chart .song_charts_lis > ul li div:nth-child(4) {
+  width: 10%;
+  background: royalblue;
+}  */

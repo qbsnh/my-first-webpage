@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://at.alicdn.com/t/font_860767_vy2m98tszo.css">
+    <link rel="stylesheet" href="play.css">
+    <title>音乐播放器</title>
+
+</head>
+
+<body>
+    <div class="audio_player">
+        <!-- 歌单 -->
+        <div class="audio_player_ing">
+            <div class="songlist">
+                <!-- 歌单左部 歌曲列表 -->
+                <div class="songlist_left clear">
+                    <ul class="songlist__header clear">
+                        <li></li>
+                        <li>歌曲</li>
+                        <li>歌手</li>
+                        <li>时长</li>
+                    </ul>
+                    <ul class="song_menu clear">
+
+                    </ul>
+                </div>
+                <!-- 歌单右部 歌词 -->
+                <div class="songlist_right">
+                    <img src="" alt="">
+                    <div class="mlrc">
+                        <ul class="ml"></ul>
+                    </div>
+                </div>
+            </div>
+            <!-- 播放器 -->
+            <div class="playback">
+                <!-- 暂停 上一首 下一首 -->
+                <div class="playback_set">
+
+                    <a href="javascript:;"><i class="iconfont icon-weibiaoti- i1"></i></a>
+                    <a href="javascript:;"><i class="iconfont icon-zanting i2"></i></a>
+                    <a href="javascript:;"><i class="iconfont icon-weibiaoti-1 i3"></i></a>
+                    <audio src="" style="position:absolute;" autoplay="autoplay"></audio>
+                </div>
+
+                <!-- 播放进度条 -->
+                <div class="playmusic clear">
+                    <!-- 歌名+歌手 -->
+                    <div class="player_music_info">
+                    </div>
+                    <!-- 播放时间 -->
+                    <div class="player_music_time"></div>
+                    <!-- 播放进度 -->
+                    <div class="player_progress clear">
+                        <div class="player_progress_bar"></div>
+                        <!-- 歌曲加载时间进度 -->
+                        <div class="player_progress_play"></div>
+                        <div class="yd"></div>
+                    </div>
+                    <!-- 调整播放声音 -->
+
+                </div>
+
+                <div class="player_voice">
+                    
+                            <input id="volume" type="range" min="0" max="1" step="any" value="0.5" />
+
+                   
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+<script src="./js/jquery-3.3.1.js"></script>
+<script>
+    // var take = decodeURIComponent(window.location.href.split("?")[1]);
+    // console.log(take)
+    var flag = true;
+    var arr1 = []
+    if (localStorage.getItem('ids')) {//获取本地已经存储的id
+        arr1 = JSON.parse(localStorage.getItem('ids'))
+    }
+    // console.log(arr1)
+    function setli() {
+        $(".song_menu").empty()
+        for (var i = 0; i < arr1.length; i++) {
+            foo(arr1[i], 0) //获取本地,并遍历内存中添加的所有歌曲的id
+            gc(arr1[i], 0)
+        }console.log(arr1)
+    }
+    setli()
+    function foo(data, fg) {
+        console.log(data)
+        $.ajax({    //ajax 获取所有本地存储歌曲播放数据
+            type: "get",
+            url: 'http://tingapi.ting.baidu.com/v1/restserver/ting?method=baidu.ting.song.play&songid=' + data,
+            dataType: 'jsonp',
+        }).done(function (data) {
+            // console.log(data.songinfo.lrclink)
+            ad(data, fg)
+            tu(data)
+            $(".player_music_info").html(data.songinfo.album_title + "--" + data.songinfo.author)
+            
+        })
+    }
+
+
+    function ad(data, fg) {
+        // console.log(data.songinfo.lrclink)
+        // var lrc=(data.songinfo.lrclink.toString())
+        console.log(data)
+        // console.log(lrc)
+        // console.log(data.bitrate.show_link)
+        var src = data.bitrate.show_link//给当前歌曲加上播放地址
+        $("audio").attr("src", src)
+        setTimeout(function () {
+            if (fg == 0) {
+                list(data)
+            }
+
+        }, 500)
+
+    }
+
+
+
+    function list(data) {
+        // console.log(data)
+        // console.log(data.song_id)
+        // console.log($("audio")[0].duration)
+        var lis = $("<li bj='" + data.songinfo.song_id + "'>" + "</li>")
+
+        for (var i = 0; i < 3; i++) {
+            var div1 = $("<div>" + + "</div>")
+            var div2 = $("<div>" + data.songinfo.title + "</div>")
+            var div3 = $("<div>" + data.songinfo.author + "</div>")
+            var div4 = $("<div>" + parseInt(data.bitrate.file_duration / 60) + ':' + parseInt(data.bitrate.file_duration % 60) + "</div>")
+        }
+        lis.append(div1)
+        lis.append(div2)
+        lis.append(div3)
+        lis.append(div4)
+        $(".song_menu").append(lis)
+
+
+
+    }
+    $(".song_menu").on('click', 'li', dj)
+    function dj(data) {
+
+        foo($(this).attr('bj'), 1)
+        $(this).attr('class', "bg").siblings().removeClass("bg")
+        lc(lrcs)
+        gc($(this).attr("bj"),1)
+    }
+
+
+    $(".i2").click(function () {
+
+        if (flag) {
+            $(this).removeClass("icon-zanting").addClass("icon-zanting2")
+            $("audio")[0].pause()
+            flag = !flag;
+        } else {
+            $(this).removeClass("icon-zanting2").addClass("icon-zanting")
+            $("audio")[0].play()
+            flag = !flag;
+        }
+
+    })
+    var bar = $(".player_progress_bar")
+    var z = $(".player_progress_play")
+    var yd = $(".yd")
+
+    var lickarr = new Array()
+    var lrcs = null;
+    var now = null;
+    function gc(data, fg) {
+
+        $.ajax({
+            type: 'get',
+            url: 'http://tingapi.ting.baidu.com/v1/restserver/ting?method=baidu.ting.song.lry&songid=' + data,
+            dataType: 'jsonp',
+
+        }).done(function (data) {
+            // console.log(data.title)
+            // lrcs=data.lrcContent;
+            console.log(data)
+            $(".ml").html("")
+            lrcs = data.lrcContent.split('\n')
+            lrcs.shift()
+
+            console.log(lrcs)
+            lc(lrcs)
+        })
+    }
+    function lc(lrcs) {//歌词截取
+        $(".ml").empty()
+        console.log("jiojn")
+            $.each(lrcs, function (i, v) {
+            // $(".mlrc").html("")
+            // console.log(v)
+            var txt = v.replace(/\[[^\]]+\]/g, fo);
+            function fo(str) {
+                if (/(\d+\:\d+\.\d+)/g.test(str)) {
+                    lickarr[i] = rep(RegExp.$1);
+                    
+                };
+                return '';
+            }
+            // console.log(lickarr)
+            txt = txt.replace(/\s+|\n+/g, '');
+            var li = $('<li>')
+            // if (txt == '') {
+            //     li.css('height', 0);
+            // }
+            li.text(txt)
+            $(".ml").append(li);
+        })
+
+    }
+
+    function tu(data) {
+        console.log(data)
+        $(".songlist_right>img").attr("src", data.songinfo.pic_radio)
+
+    }
+    // console.log(lics)
+    $("audio")[0].addEventListener('timeupdate', function () {
+        
+        var proportion = $("audio")[0].currentTime / $("audio")[0].duration;
+
+        if ($("audio")[0].currentTime == $("audio")[0].duration) {//进度条
+            qh()
+        }
+        var miss = $("audio")[0].currentTime.toString();
+        var ms = miss.substring(miss.indexOf('.') + 1, miss.indexOf('.') + 3);
+        var s = parseInt($("audio")[0].currentTime % 60);
+        var m = parseInt($("audio")[0].currentTime / 60);
+
+        var timer = tiTimer(m) + tiTimer(s) + tiTimer(ms);
+        $.each(lickarr, function (i, v) {
+            if (timer >= v) {
+                now = i;
+            }
+        })
+
+        $(".ml>li").eq(now).css('color', "#aadacc").siblings().css("color", "black");//歌词
+        $(".ml").animate({
+            'top':-$('li').eq(now).position().top+ 'px'
+        }, 1)
+        var present = $("audio")[0].currentTime.toString()
+        bar.width(z.width() * proportion + 'px')
+        yd.css("left", z.width() * proportion + 'px')
+        $(".player_music_time").html(parseInt($("audio")[0].currentTime / 60) + ':' + parseInt($("audio")[0].currentTime % 60) + '/' + parseInt($("audio")[0].duration / 60) + ':' + parseInt($("audio")[0].duration % 60))
+    })
+    function qh() {
+
+        if ($(".song_menu>li[class=bg]").index() == ($(".song_menu>li").length - 1)) {
+            var str = $(".song_menu>li").eq(0)
+        } else {
+            var str = $(".song_menu>li[class=bg]").next()
+        }
+        str.attr('class', "bg").siblings().removeClass("bg")
+        foo(str.attr("bj"), 1)
+        gc(str.attr("bj"), 1)
+    }
+
+    $(".i3").click(qh)//下一首
+
+    function pr() {
+    console.log($(".song_menu>li[class=bg]"))
+        if ($(".song_menu>li[class=bg]").index() == 0) {
+            var str = $(".song_menu>li").eq($(".song_menu>li").length - 1)
+        } else {
+            var str = $(".song_menu>li[class=bg]").prev()
+        }
+        str.attr('class', "bg").siblings().removeClass("bg")
+        foo(str.attr("bj"), 1)
+        gc(str.attr("bj"),1)
+       
+        lc(lrcs)
+    }
+    $(".i1").click(pr)
+
+    function rep(obj) {
+        /* 将时间字符串每个都截取出来转为数组 */
+        var dt = obj.split('');
+        var dd = '';
+        /* 遍历数组，将非符号的字符串存起来，符号过滤 */
+        $.each(dt, function (i, v) {
+            if (v == ':' || v == '.') {
+                return;
+            }
+            /* 字符串拼接 */
+            dd = dd + v;
+        })
+        return dd;
+    }
+
+    function tiTimer(obj) {
+        if (obj < 10) {
+            return '0' + obj;
+        } else {
+            return obj + '';
+        }
+    }
+
+
+</script>
+
+</html>

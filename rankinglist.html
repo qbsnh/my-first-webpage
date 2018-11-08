@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://at.alicdn.com/t/font_860767_w3kk29ahtpl.css">
+    <link rel="stylesheet" href="search.css">
+    <link rel="stylesheet" href="rankinglist.css">
+    <title>排行榜</title>
+</head>
+<!-- 
+    1.给每一个排行榜绑定对应排行榜的id
+    2.点击事件 传入id到ajax获取对应排行榜的数据
+    2.根据排行榜的数据创建歌曲列表li
+
+ -->
+
+<body>
+    <div class="navigation_box clear">
+        <div class="navigation">
+            <a href="javascript:;" class="music_icon">
+                <i class="iconfont icon-yinle i1"></i>
+            </a>
+            <div class="search_box">
+                <input type="text" class="searchbox" id="searchbox" style="border-right:none">
+            </div>
+            <!-- 搜索音乐 -->
+            <a href="javascript:;" class="searchbox_icon" id="searchbox_icon" style="border-left:none; background-color: white">
+                <i class="iconfont icon-sousuo i2"></i>
+            </a>
+
+            <div class="adhibition ">
+                <div class="recommend">排行榜</div>
+                <div class="rankinglist">歌手</div>
+                <div class="mv">mv</div>
+
+            </div>
+        </div>
+
+
+
+    </div>
+
+    <div class="song_charts">
+        <div class="song_chart">
+            <div class="song_charts_content">
+                <ul>
+                    <div>排行榜</div>
+                    <li b="1">新歌榜</li>
+                    <li b="2">热歌榜</li>
+                    <li b="23">情歌榜</li>
+                    <li b="11">摇滚榜</li>
+                    <li b="12">爵士</li>
+                    <li b="24">影视金曲榜</li>
+                    <li b="25">网络歌曲榜 </li>
+                </ul>
+            </div>
+
+            <div class="song_charts_lis">
+                <div class="tittle">新歌排行榜</div>
+                <div class="song_table">
+                    <div>排名</div>
+                    <div>歌曲</div>
+                    <div>歌手</div>
+                    <div>时长</div>
+                </div>
+                <ul class="topul">
+                    <!-- <li>
+                        <div></div>
+                        <div>
+                            <img src="http://qukufile2.qianqian.com/data2/pic/8d7f69cc3337b2eaf7e7f0c9646d0dce/604392758/604392758.jpg@s_1,w_90,h_90"
+                                alt="">
+                            <a href="javascript:;"><i class="iconfont icon-icon-"></i></a>
+                        </div>
+                        <div></div>
+                        <div></div>
+                    </li> -->
+
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+<script src="./js/jquery-3.3.1.js"></script>
+<script src="sck.js"></script>
+<script>
+    var b = null;
+    $(".song_charts_content li").click(function () {
+        b = $(this).attr("b")
+        $(".topul").html("")
+        foo(b)
+        
+    })
+    
+    function foo(b) {
+        $.ajax({
+            type: 'get',
+            url: 'http://tingapi.ting.baidu.com/v1/restserver/ting?method=baidu.ting.billboard.billList&type=' + b + '&size=30&offset=0',
+            dataType: 'jsonp',
+        }).done(function (data) {
+            console.log(data)
+            songtop(data)
+            $(".tittle").html(data.billboard.name)
+        })
+    }
+    function songtop(data) {
+       
+   
+        for (var i = 0; i < data.song_list.length; i++) {
+            var toplis = $("<li>" + "</li>")
+            var  div1=$("<div>"+data.song_list[i].rank+"</div>")
+            var  div2=$("<div></div>")
+            var span=$("<span>"+data.song_list[i].album_title+"</span>")
+            var plm=$("<img src="+data.song_list[i].pic_small+">")
+            var  pla=$('<a href="javascript:;"></a>')
+            var  pli=$('<i class="iconfont icon-icon-"></i>')
+            pli.attr("links",data.song_list[i].song_id)
+            var  div3=$("<div>"+ data.song_list[i].artist_name+"</div>")
+            var  div4=$("<div>"+parseInt(data.song_list[i].file_duration/60)+ ':' + n(parseInt(data.song_list[i].file_duration%60))+"</div>")
+
+            
+            toplis.append(div1)
+            div2.append(plm)
+            div2.append(span)
+            div2.append(pla)
+
+            pla.append(pli)
+            toplis.append(div2)
+            
+            toplis.append(div3)
+            toplis.append(div4)
+            $(".topul").append(toplis)
+            function n(num){
+                num=num<10? "0"+ num : num +"";
+                return num;
+            }
+        }
+        
+    }
+    var arr=[]
+    $(".topul").on('click','i',mp)
+
+    if(localStorage.getItem('ids')){
+        arr=JSON.parse(localStorage.getItem('ids'))
+    }
+    function mp(){
+        var ids=$(this).attr("links")
+        arr.push(ids)
+        localStorage.setItem("ids",JSON.stringify(arr))
+        window.open("play.html")
+    }
+   
+    $(".music_icon").click(function(){
+        location.href="index.html"
+    })
+</script>
+
+</html>
